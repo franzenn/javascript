@@ -42,16 +42,37 @@
 //     document.body.appendChild(contenedor);
 // }
 
-
-
-const carritoDeCompras= {};
+const carrito = JSON.parse(localStorage.getItem("carrito")) ?? [];
+const total = carrito.reduce((acumulador, producto) => acumulador + producto.price, 0);
+document.getElementById("sumarCarrito").innerHTML = `${carrito.length}  - $${total}`;
 
 const productosDeCards = [
-    {id:1, title:"TACOS", img:"https://static.wikia.nocookie.net/migastronomia/images/4/4d/Taco.png/revision/latest?cb=20110706153644&path-prefix=es", price:1200},
-    {id:2, title:"BURRITOS", img:"https://www.wikihow.com/images_en/thumb/4/4e/Make-a-California-Burrito-Final.jpg/v4-1200px-Make-a-California-Burrito-Final.jpg", price:1500},
-    {id:3, title:"QUESADILLAS", img:"https://www.cocinayvino.com/wp-content/uploads/2015/09/CocinaYVino_QuesadillaMexicana_SavetlanaSapunova123RF-1200x900.jpg", price:1300},
-    {id:4, title:"BEBIDAS", img:"https://jrdistribution.com.ar/wp-content/uploads/2018/10/lineA-500-600x504.jpg", price: 330},
+    {id:1, title:"TACOS", img:"img/taco.jpg", price:1000, category:"Mexicano"},
+    {id:2, title:"BURRITO", img:"img/burritos.jpg", price:1500, category:"Mexicano"},
+    {id:3, title:"ENSALADA", img:"img/ensalada.png", price:900, category:"Light"},
+    {id:4, title:"PAPAS CHARRO", img:"img/entrada.png", price: 770, category:"Entradas"},
+    {id:5, title:"HAMBURGUESA CHARRO", img:"img/hamburguesa.png", price: 1100, category:"Hamburguesa"},
+    {id:6, title:"BEBIDAS PEPSI", img:"https://jrdistribution.com.ar/wp-content/uploads/2018/10/lineA-500-600x504.jpg", price: 330, category:"Bebidas"},
 ];
+
+function filtrarProductosPorCategoria(categoria) {
+    document.getElementById("cardsDOM").innerHTML="";
+    const productosFiltrados = productosDeCards.filter((producto) => producto.category === categoria);
+
+    productosFiltrados.forEach((producto) => { 
+        document.getElementById("cardsDOM").innerHTML = "";
+        const idBoton = `add-cart${producto.id}`   
+        document.getElementById("cardsDOM").innerHTML += `
+                <div class="col-4 card container m-3 mx-auto">
+                    <h2 class='text-center'>${producto.title}</h2>
+                    <img src="${producto.img}">
+                    <h3 class="text-center text-danger">${"$"+producto.price}</h3>
+                    <button id="${idBoton}">Agregar al carrito</button>
+                </div>`
+    })
+}
+
+
 
 productosDeCards.forEach((producto) => { 
     const idBoton = `add-cart${producto.id}`   
@@ -59,13 +80,17 @@ productosDeCards.forEach((producto) => {
             <div class="col-4 card container m-3 mx-auto">
                 <h2 class='text-center'>${producto.title}</h2>
                 <img src="${producto.img}">
-                <p>${"$"+producto.price}</p>
+                <h3 class="text-center text-danger">${"$"+producto.price}</h3>
                 <button id="${idBoton}">Agregar al carrito</button>
             </div>`
 })
 
 productosDeCards.forEach((producto) => {
     const idBoton = `add-cart${producto.id}`
-    document.getElementById(idBoton).addEventListener('click', () => { alert(`AGREGASTE ${producto.title}`);
+    document.getElementById(idBoton).addEventListener('click', () => { 
+        carrito.push(producto);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        const total = carrito.reduce((acumulador, producto) => acumulador + producto.price, 0);
+        document.getElementById("sumarCarrito").innerHTML = `(${carrito.length})  - $${total}`;
     })
 })
