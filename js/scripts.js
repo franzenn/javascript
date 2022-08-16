@@ -1,14 +1,16 @@
 //OPERADORES AVANZADOS AND, OR Y TERNARIO
 
-alert("Bienvenido a El Charro Online!");
-let edad = Number(prompt("Indique su edad"));
-const añoNacimiento = 2022 - edad;
+Swal.fire("BIENVENIDO A EL CHARRO ONLINE!");
 
-if(edad>0){
-    edad >= 18 ? alert("Puede comprar alcohol") : alert("Es menor de edad, no puede comprar alcohol");
-}
-edad > 0 && console.log("El usuario nació en: "+ añoNacimiento);
-console.log(edad || "No ingreso edad");
+  
+// let edad = Number(prompt("Indique su edad"));
+// const añoNacimiento = 2022 - edad;
+
+// if(edad>0){
+// edad >= 18 ? alert("PUEDE COMPRAR ALCOHOL!") : alert("Es menor de edad, no puede comprar alcohol");
+// }
+// edad > 0 && console.log("El usuario nació en: "+ añoNacimiento);
+// console.log(edad || "No ingreso edad");
 
 //DESESTRUCTURACIÓN
 
@@ -86,5 +88,11 @@ productosDeCards.forEach((producto) => {
         localStorage.setItem("carrito", JSON.stringify(carrito));
         const total = carrito.reduce((acumulador, producto) => acumulador + producto.price, 0);
         document.getElementById("sumarCarrito").innerHTML = `(${carrito.length})  - $${total}`;
+        Swal.fire({
+            title: 'Perfecto!',
+            text: 'Haz agregado al carrito',
+            icon: 'success',
+            confirmButtonText: 'Cool'
+          })
     })
 })
