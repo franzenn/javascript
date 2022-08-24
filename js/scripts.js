@@ -96,3 +96,24 @@ productosDeCards.forEach((producto) => {
           })
     })
 })
+
+
+const buscarProductos = () => {
+    fetch('https://api.mercadolibre.com/sites/MLA/search?q=comida-mexicana')
+        .then((Response) => Response.json())
+        .then((informacion => {
+            let acumulador = "";
+            console.log(informacion);
+            informacion.results.forEach((productos) => {
+                console.log(productos);
+                acumulador += `<div class="card">
+                <img src="${productos.thumbnail}">
+                    <h2>${productos.title}</h2>
+                    <h2>${productos.price}</h2>
+                </div>` 
+            })
+            document.getElementById("mercadolibre").innerHTML = acumulador;
+        }))
+}
+
+buscarProductos();
